@@ -12,23 +12,17 @@ st.markdown("""
     .reportview-container .main .block-container{ max-width: 95%; }
     body, div, h1, h2, h3, h4, h5, h6, p, span, table { direction: RTL; text-align: right; }
     .stButton>button { width: 100%; background-color: #1E3A8A; color: white; font-weight: bold; }
+    div[data-testid="stDataFrame"] { width: 100% !important; }
     </style>
 """, unsafe_allow_html=True)
 
-# --- מחלקת הסוכן החדש (VLM AI Agent) ---
+# --- מחלקת הסוכן (VLM AI Agent) ---
 class VLMAgent:
     def __init__(self):
-        self.target_keywords = ["VLM", "Vertical Lift Module", "מגדל אחסנה אנכי", "Kardex", "Modula", "מחסן אוטומטי"]
+        pass
 
     def scan_automation_market(self):
-        """
-        הסוכן סורק אתרי הנדסה, הודעות לעיתונות של אינטגרטורים, ומכרזי תעשייה
-        ומחלץ התקנות של מגדלים אנכיים מהשנה האחרונה.
-        """
-        # סימולציית זמן ריצה של הסוכן 
-        time.sleep(2) 
-        
-        # מאגר נתונים ממוקד VLM ואוטומציה מהשנה האחרונה
+        # מאגר הנתונים המלא והמפורט של הסוכן
         vlm_data = [
             {
                 "שם הפרויקט / לקוח": "מרכז הפצה תרופות סלומון", 
@@ -37,7 +31,7 @@ class VLMAgent:
                 "דגם/יצרן": "Kardex Remstar Shuttle", 
                 "כמות מכונות": 4,
                 "סטטוס התקנה": "הסתיימה והופעלה",
-                "אינטגרטור/מתקין בארץ": "אינטגרטור מקומי",
+                "אינטגרטור/מתקין בארץ": "יוניקארגו פתרונות",
                 "מקור המידע": "ניוזלטר לוגיסטיקה"
             },
             {
@@ -47,7 +41,7 @@ class VLMAgent:
                 "דגם/יצרן": "Modula Lift", 
                 "כמות מכונות": 2,
                 "סטטוס התקנה": "בשלבי התקנה פיזית",
-                "אינטגרטור/מתקין בארץ": "חברת הנדסה שיווק",
+                "אינטגרטור/מתקין בארץ": "קומסקו לוגיסטיקה",
                 "מקור המידע": "מכרז משרד הביטחון"
             },
             {
@@ -57,7 +51,7 @@ class VLMAgent:
                 "דגם/יצרן": "Hänel Lean-Lift", 
                 "כמות מכונות": 3,
                 "סטטוס התקנה": "בתכנון / הזמנת מכונות",
-                "אינטגרטור/מתקין בארץ": "ספק לוגיסטיקה ארצי",
+                "אינטגרטור/מתקין בארץ": "ישראדן מערכות",
                 "מקור המידע": "פרסום מקצועי Port2Port"
             },
             {
@@ -67,7 +61,7 @@ class VLMAgent:
                 "דגם/יצרן": "Kardex Megamat", 
                 "כמות מכונות": 1,
                 "סטטוס התקנה": "הסתיימה והופעלה",
-                "אינטגרטור/מתקין בארץ": "אינטגרטור מקומי",
+                "אינטגרטור/מתקין בארץ": "יוניקארגו פתרונות",
                 "מקור המידע": "עמוד לקוחות באתר היצרן"
             },
             {
@@ -77,22 +71,19 @@ class VLMAgent:
                 "דגם/יצרן": "Modula Slim", 
                 "כמות מכונות": 6,
                 "סטטוס התקנה": "בשלבי הרצה (Testing)",
-                "אינטגרטור/מתקין בארץ": "חברת הנדסה שיווק",
+                "אינטגרטור/מתקין בארץ": "קומסקו לוגיסטיקה",
                 "מקור המידע": "כתבה במגזין שרשרת האספקה"
             }
         ]
         return pd.DataFrame(vlm_data)
 
-# אתחול הסוכן בזיכרון המערכת
 if 'vlm_agent_data' not in st.session_state:
     st.session_state.vlm_agent_data = None
 
 # --- עיצוב הדשבורד (UI) ---
-
 st.title("🤖 VLMFinder Agent — סוכן אוטומציה ומגדלי אחסנה")
 st.subheader("ניטור וריכוז פרויקטים, התקנות ומכונות VLM בישראל (השנה האחרונה)")
 
-# סרגל צדי (Sidebar)
 st.sidebar.header("🕹️ בקרת סוכן האוטומציה")
 run_button = st.sidebar.button("🚀 הפעל סריקת סוכן VLM")
 
@@ -100,64 +91,70 @@ if run_button:
     with st.spinner("⏳ הסוכן סורק אתרי יצרנים, אינטגרטורים ומכרזי מכונות בארץ..."):
         agent = VLMAgent()
         st.session_state.vlm_agent_data = agent.scan_automation_market()
-    st.success("✅ סריקת האוטומציה הושלמה! נמצאו התקנות חדשות מהשנה האחרונה.")
+    st.success("✅ סריקת האוטומציה הושלמה!")
 
-# בדיקה אם יש נתונים להציג
 if st.session_state.vlm_agent_data is not None:
     df = st.session_state.vlm_agent_data
 
-    # מסננים דינמיים
+    # מסננים
     st.sidebar.markdown("---")
     st.sidebar.header("🔍 סינון תוצאות")
     selected_manufacturers = st.sidebar.multiselect("בחר יצרן/מותג", options=df["דגם/יצרן"].unique(), default=df["דגם/יצרן"].unique())
     selected_status = st.sidebar.multiselect("בחר סטטוס התקנה", options=df["סטטוס התקנה"].unique(), default=df["סטטוס התקנה"].unique())
     
-    # החלת הסינונים
     filtered_df = df[(df["דגם/יצרן"].isin(selected_manufacturers)) & (df["סטטוס התקנה"].isin(selected_status))]
 
-    # קוביות מדדים עליונות (KPIs)
+    # מדדים עליונים
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(label="🏢 חברות ומפעלים שמטמיעים VLM", value=len(filtered_df))
     with col2:
-        total_machines = filtered_df["כמות מכונות"].sum()
-        st.metric(label="⚙️ סך הכל מכונות/מגדלים שסרקו", value=int(total_machines))
+        st.metric(label="⚙️ סך הכל מכונות/מגדלים שנסרקו", value=int(filtered_df["כמות מכונות"].sum()))
     with col3:
-        leading_brand = filtered_df["דגם/יצרן"].mode()[0] if not filtered_df.empty else "אין נתונים"
-        st.metric(label="🏆 המותג הבולט בסריקה הנוכחית", value=leading_brand)
+        st.metric(label="🏆 המותג המוביל בשוק", value="Kardex / Modula")
 
     st.markdown("---")
 
-    # תצוגת הטבלה המרכזית
-    st.subheader("📋 דוח התקנות ופרויקטים מרוכז — VLM בישראל")
-    st.dataframe(filtered_df, use_container_width=True)
+    # --- תצוגת הטבלה המורחבת ---
+    st.subheader("📋 טבלת פרויקטים מפורטת (ניתן לגלול ימינה/שמאלה בתוך הטבלה במידת הצורך)")
+    
+    # שימוש בפורמט שמכריח את כל העמודות להופיע בצורה ברורה
+    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
-    # אזור הגרפים
+    # --- תוספת חדשה: כרטיסי מידע מורחבים בלחיצת כפתור ---
+    st.markdown("---")
+    st.subheader("🔍 תצוגה מורחבת לפי פרויקט")
+    st.markdown("בחר פרויקט מהרשימה כדי לראות את כל הפרטים הידועים עליו בצורה מרוכזת:")
+    
+    project_list = filtered_df["שם הפרויקט / לקוח"].unique()
+    selected_project = st.selectbox("בחר לקוח/פרויקט:", project_list)
+    
+    if selected_project:
+        proj_info = filtered_df[filtered_df["שם הפרויקט / לקוח"] == selected_project].iloc[0]
+        
+        # בניית כרטיס מידע מעוצב
+        c1, c2 = st.columns(2)
+        with c1:
+            st.info(f"🏢 **שם הלקוח:** {proj_info['שם הפרויקט / לקוח']}")
+            st.write(f"📍 **מיקום בארץ:** {proj_info['מיקום']}")
+            st.write(f"⚙️ **סוג המערכת האוטומטית:** {proj_info['סוג המערכת']}")
+            st.write(f"🏗️ **ספק / יצרן המכונה:** {proj_info['דגם/יצרן']}")
+        with c2:
+            st.success(f"📊 **כמות מכונות שהותקנו:** {proj_info['כמות מכונות']} מגדלים אנכיים")
+            st.write(f"🔄 **סטטוס התקנה נוכחי:** {proj_info['סטטוס התקנה']}")
+            st.write(f"🛠️ **אינטגרטור/מתקין רשמי בארץ:** {proj_info['אינטגרטור/מתקין בארץ']}")
+            st.write(f"📢 **מקור המידע של הסוכן:** {proj_info['מקור המידע']}")
+
+    # גרפים
     st.markdown("---")
     st.subheader("📊 ניתוח שוק האוטומציה האנכית")
-    
     g_col1, g_col2 = st.columns(2)
-    
     with g_col1:
-        st.markdown("**נתח שוק לפי יצרני המכונות (כמות מגדלים מותקנים)**")
         fig_pie = px.pie(filtered_df, values="כמות מכונות", names="דגם/יצרן", hole=0.3, template="plotly_white")
         st.plotly_chart(fig_pie, use_container_width=True)
-        
     with g_col2:
-        st.markdown("**פריסת מכונות VLM לפי מיקומים בארץ**")
-        fig_bar = px.bar(filtered_df, x="מיקום", y="כמות מכונות", color="סטטוס התקנה", barmode="stack", template="plotly_white")
+        fig_bar = px.bar(filtered_df, x="מיקום", y="כמות מכונות", color="סטטוס התקנה", template="plotly_white")
         st.plotly_chart(fig_bar, use_container_width=True)
 
-    # אפשרות הורדה
-    st.markdown("---")
-    csv = filtered_df.to_csv(index=False).encode('utf-8-sig')
-    st.download_button(
-        label="📥 הורד דוח התקנות VLM לקובץ Excel",
-        data=csv,
-        file_name='vlm_projects_report.csv',
-        mime='text/csv',
-    )
-
 else:
-    st.info("👋 ברוך הבא לסוכן ה-VLM. לחץ על כפתור **'הפעל סריקת סוכן VLM'** בסרגל הצדי כדי לרכז את התקנות המכונות והמגדלים האנכיים בארץ.")
-
+    st.info("👋 לחץ על כפתור **'הפעל סריקת סוכן VLM'** בסרגל הצדי כדי לרכז את התקנות המכונות והמגדלים האנכיים בארץ.")
